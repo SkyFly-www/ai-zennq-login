@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Zennq 😈 • Masuk ke Inti</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg: #0a0012;
+      --card: rgba(30, 10, 60, 0.75);
+      --accent: #b026ff;
+      --accent-glow: #e945ff;
+      --text: #e9d5ff;
+      --text-muted: #c084fc;
+      --glow: rgba(176, 38, 255, 0.45);
+      --border: rgba(125, 26, 181, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8f1ff;
+      --card: rgba(255, 255, 255, 0.9);
+      --accent: #7d1ab5;
+      --accent-glow: #9f4ed9;
+      --text: #4c0080;
+      --text-muted: #6b21a8;
+      --glow: rgba(125, 26, 181, 0.35);
+      --border: rgba(125, 26, 181, 0.3);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      transition: all 0.5s ease;
+      overflow: hidden;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 44px;
+      height: 44px;
+      background: var(--card);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 15px var(--glow);
+      z-index: 1000;
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px var(--glow);
+    }
+    .theme-toggle:active {
+      transform: scale(0.92);
+    }
+    .theme-toggle:focus {
+      outline: none;
+    }
+    .theme-toggle i {
+      font-size: 20px;
+      position: absolute;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    [data-theme="dark"] .sun { opacity: 0; transform: rotate(-180deg); }
+    [data-theme="light"] .moon { opacity: 0; transform: rotate(180deg); }
+
+    .auth-container {
+      width: 100%;
+      max-width: 360px;
+      padding: 32px 24px;
+      background: var(--card);
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px var(--glow);
+      backdrop-filter: blur(16px);
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+      transition: all 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .logo {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px var(--glow);
+    }
+
+    h1 { font-size: 26px; font-weight: 700; margin: 8px 0; }
+    .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+      position: relative;
+    }
+    label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted); font-weight: 500; }
+    input {
+      width: 100%;
+      padding: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    [data-theme="light"] input {
+      background: rgba(0,0,0,0.05);
+      border-color: #d1b3ff;
+      color: #4c0080;
+    }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 16px;
+      top: 65%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 18px;
+      z-index: 10;
+    }
+    .password-toggle:hover {
+      color: var(--accent);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.4s;
+      box-shadow: 0 8px 25px rgba(176,38,255,0.35);
+    }
+    .btn-primary:hover, .btn-primary:active {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(176,38,255,0.5);
+    }
+
+    .auth-links { margin-top: 24px; font-size: 14px; }
+    .auth-links a { color: var(--accent); text-decoration: none; cursor: pointer; transition: color 0.3s; }
+    .auth-links a:hover { color: var(--accent-glow); text-decoration: underline; }
+
+    .error-msg {
+      color: #ff4d6d;
+      font-size: 14px;
+      margin: 12px 0;
+      text-align: center;
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      animation: slideIn 0.5s ease-in-out;
+    }
+    .page.active { display: block; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dashboard-msg {
+      font-size: 18px;
+      margin: 32px 0;
+      color: var(--accent-glow);
+      font-weight: 600;
+    }
+
+    .info-item {
+      background: rgba(176,38,255,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      text-align: left;
+    }
+    .info-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .info-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent-glow);
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Toggle Tema -->
+<div class="theme-toggle" id="themeToggle">
+  <i class="fas fa-sun sun"></i>
+  <i class="fas fa-moon moon"></i>
+</div>
+
+<!-- Halaman Masuk -->
+<div id="loginPage" class="page active">
+  <div class="auth-container">
+    <div class="logo">
+      Zennq 😈
+    </div>
+    <h1 style="text-align: left; margin-left: 21.5%;">Masuk ke Inti</h1>
+    <p class="subtitle" style="text-align: left; margin-left: 21.5%;">Akses penuh tanpa batas</p>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label>Nama</label>
+        <input type="text" id="loginNama" placeholder="contoh: admin" required autocomplete="off"/>
+      </div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="contoh: admin123@gmail.com" required autocomplete="off"/>
+      </div>
+      <div class="input-group">
+        <label>Kata Sandi</label>
+        <input type="password" id="loginPassword" placeholder="Masukkan kata sandi" required autocomplete="off"/>
+        <i class="fas fa-eye-slash password-toggle" id="toggleLoginPass"></i>
+      </div>
+      <div class="error-msg" id="loginError"></div>
+      <button type="submit" class="btn-primary">MASUK SEKARANG</button>
+    </form>
+
+    <div class="auth-links">
+      <a id="keDaftar">Buat akun baru</a>
+    </div>
+  </div>
+</div>
+
+<!-- Halaman Daftar -->
+<div id="registerPage" class="page">
+  <div class="auth-container">
+    <div class="logo">Zennq 😈</div>
+    <h1 style="text-align: left; margin-left: 15.5%;">Daftar Akun Baru</h1>
+    <p class="subtitle" style="text-align: left; margin-left: 30.5%;">Hubungkan ke inti</p>
+
+    <form id="registerForm">
+      <div class="input-group">
+        <label>Nama</label>
+        <input type="text" id="regUsername" placeholder="contoh: admin" required autocomplete="off"/>
+      </div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="contoh: admin123@gmail.com" required autocomplete="off"/>
+      </div>
+      <div class="input-group">
+        <label>Kata Sandi</label>
+        <input type="password" id="regPassword" placeholder="Minimal 8 karakter" required autocomplete="off"/>
+        <i class="fas fa-eye-slash password-toggle" id="toggleRegPass"></i>
+      </div>
+      <div class="input-group">
+        <label>Konfirmasi Kata Sandi</label>
+        <input type="password" id="regConfirm" placeholder="Ulangi kata sandi" required autocomplete="off"/>
+        <i class="fas fa-eye-slash password-toggle" id="toggleConfirmPass"></i>
+      </div>
+      <div class="error-msg" id="regError"></div>
+      <button type="submit" class="btn-primary">DAFTAR AKUN</button>
+    </form>
+
+    <div class="auth-links">
+      <a id="kembaliLoginDariDaftar">Sudah punya akun? Masuk di sini</a>
+    </div>
+  </div>
+</div>
+
+<!-- Halaman Dashboard -->
+<div id="dashboardPage" class="page">
+  <div class="auth-container">
+    <div class="logo">Zennq 😈</div>
+    <h1 style="text-align: left; margin-left: 17.5%;">Selamat Datang</h1>
+    <p class="subtitle" style="text-align: left; margin-left: 11.5%;">Inti Zennq 😈 telah terbuka untukmu</p>
+
+    <div class="info-item">
+      <div class="info-label">Nama Akun</div>
+      <div class="info-value" id="displayNama">Memuat...</div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-label">Email Akun</div>
+      <div class="info-value" id="displayEmail">Memuat...</div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-label">Kata Sandi Akun</div>
+      <div class="info-value" id="displaySandi">Memuat...</div>
+    </div>
+
+    <button class="btn-primary" id="keluarDashboard">KELUAR</button>
+  </div>
+</div>
+
+<script>
+// Script tetap sama persis
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', () => {
+  const temaSekarang = document.documentElement.getAttribute('data-theme');
+  const temaBaru = temaSekarang === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', temaBaru);
+  localStorage.setItem('temaZennq', temaBaru);
+});
+if (localStorage.getItem('temaZennq')) {
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('temaZennq'));
+}
+
+const halaman = {
+  login: document.getElementById('loginPage'),
+  daftar: document.getElementById('registerPage'),
+  dashboard: document.getElementById('dashboardPage')
+};
+
+function gantiHalaman(id) {
+  Object.values(halaman).forEach(h => h.classList.remove('active'));
+  halaman[id].classList.add('active');
+}
+
+document.getElementById('keDaftar').addEventListener('click', e => { e.preventDefault(); gantiHalaman('daftar'); });
+document.getElementById('kembaliLoginDariDaftar').addEventListener('click', e => { e.preventDefault(); gantiHalaman('login'); });
+
+function togglePassword(inputId, iconId) {
+  const input = document.getElementById(inputId);
+  const icon = document.getElementById(iconId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  }
+}
+
+document.getElementById('toggleLoginPass')?.addEventListener('click', () => togglePassword('loginPassword', 'toggleLoginPass'));
+document.getElementById('toggleRegPass')?.addEventListener('click', () => togglePassword('regPassword', 'toggleRegPass'));
+document.getElementById('toggleConfirmPass')?.addEventListener('click', () => togglePassword('regConfirm', 'toggleConfirmPass'));
+
+document.getElementById('registerForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const username = document.getElementById('regUsername').value.trim().toLowerCase();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const sandi = document.getElementById('regPassword').value.trim();
+  const konfirmasi = document.getElementById('regConfirm').value.trim();
+  const error = document.getElementById('regError');
+
+  error.style.display = 'none';
+  error.textContent = '';
+
+  if (!username || !email || !sandi || !konfirmasi) {
+    error.textContent = 'Semua kolom wajib diisi';
+    error.style.display = 'block';
+    return;
+  }
+  if (sandi.length < 8) {
+    error.textContent = 'Kata sandi minimal 8 karakter';
+    error.style.display = 'block';
+    return;
+  }
+  if (sandi !== konfirmasi) {
+    error.textContent = 'Konfirmasi kata sandi tidak cocok';
+    error.style.display = 'block';
+    return;
+  }
+  if (localStorage.getItem(`zennq_${username}`)) {
+    error.textContent = 'Nama sudah digunakan';
+    error.style.display = 'block';
+    return;
+  }
+
+  localStorage.setItem(`zennq_${username}`, sandi);
+  localStorage.setItem(`zennq_email_${username}`, email);
+  alert('Akun berhasil dibuat! Silakan masuk sekarang.');
+  document.getElementById('registerForm').reset();
+  gantiHalaman('login');
+});
+
+document.getElementById('loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const nama = document.getElementById('loginNama').value.trim().toLowerCase();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const sandi = document.getElementById('loginPassword').value.trim();
+  const error = document.getElementById('loginError');
+
+  error.style.display = 'none';
+  error.textContent = '';
+
+  if (!nama || !email || !sandi) {
+    error.textContent = 'Semua kolom wajib diisi';
+    error.style.display = 'block';
+    return;
+  }
+
+  const sandiTersimpan = localStorage.getItem(`zennq_${nama}`);
+  const emailTersimpan = localStorage.getItem(`zennq_email_${nama}`);
+
+  if (!sandiTersimpan || sandiTersimpan.trim() !== sandi || !emailTersimpan || emailTersimpan.trim().toLowerCase() !== email) {
+    error.textContent = 'Nama, Email, atau kata sandi salah';
+    error.style.display = 'block';
+    return;
+  }
+
+  document.getElementById('displayNama').textContent = nama;
+  document.getElementById('displayEmail').textContent = emailTersimpan;
+  document.getElementById('displaySandi').textContent = sandiTersimpan;
+
+  gantiHalaman('dashboard');
+  document.getElementById('loginForm').reset();
+});
+
+document.getElementById('keluarDashboard').addEventListener('click', e => {
+  e.preventDefault();
+  if (confirm('Yakin ingin keluar?')) {
+    gantiHalaman('login');
+  }
+});
+</script>
+</body>
+</html>
